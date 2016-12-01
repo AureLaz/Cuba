@@ -120,7 +120,7 @@
                         <h4>Carte Intéractive</h4>
                         <!-- SVG -->
                         <a class="zoom" title="Cuba">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="800" height="285">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 850 280">
                                 <defs>
                                     <style type="text/css">
                                         .land {
