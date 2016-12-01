@@ -212,14 +212,30 @@
             $("path").hover(function (e) {
                 var idpath = $(this).attr('id');
                 var titlepath = $(this).attr('title');
-                $("body").append("<div class='card' id='zoom'><div class='card-image'><img src='img/" + idpath + ".jpg'><p class='card-title'>" + titlepath + "</p></div>");
-                $("#zoom").css("top", (e.pageY - xOffset) + "px").css("left", (e.pageX + yOffset) + "px").fadeIn("slow");
+                if (window.matchMedia("(min-width: 600px)").matches) {
+                    $("body").append("<div class='card' id='zoom'><div class='card-image'><img src='img/" + idpath + ".jpg'><p class='card-title'>" + titlepath + "</p></div>");
+                    $("#zoom").css("top", (e.pageY - xOffset) + "px").css("left", (e.pageX + yOffset) + "px").fadeIn("slow");
+                }
+                else {
+                    if (idpath == "guantanamo" || idpath == "santiagodecuba" || idpath == "holguin" || idpath == "lastunas" || idpath == "granma" || idpath == "camaguey") {
+                        $("body").append("<div class='card' id='zoom'><div class='card-image'><img src='img/" + idpath + ".jpg'><p class='card-title'>" + titlepath + "</p></div>");
+                        $("#zoom").css("top", (e.pageY - 175) + "px").css("left", (e.pageX - 150) + "px").fadeIn("slow");
+                    }
+                    else if (idpath == "pinardelrio" || idpath == "artemisa" || idpath == "isladelajuventud") {
+                        $("body").append("<div class='card' id='zoom'><div class='card-image'><img src='img/" + idpath + ".jpg'><p class='card-title'>" + titlepath + "</p></div>");
+                        $("#zoom").css("top", (e.pageY - 75) + "px").css("left", (e.pageX + 20) + "px").fadeIn("slow");
+                    }
+                    else {
+                        $("body").append("<div class='card' id='zoom'><div class='card-image'><img src='img/" + idpath + ".jpg'><p class='card-title'>" + titlepath + "</p></div>");
+                        $("#zoom").css("top", (e.pageY + 20) + "px").css("left", (e.pageX - 95) + "px").fadeIn("slow");
+                    }
+                }
             }, function () {
                 this.title = this.texte;
                 $("#zoom").remove();
             });
             $("a.zoom").mousemove(function (e) {
-                $("#zoom").css("top", (e.pageY - xOffset) + "px").css("left", (e.pageX + yOffset) + "px");
+                if (window.matchMedia("(min-width: 600px)").matches) $("#zoom").css("top", (e.pageY - xOffset) + "px").css("left", (e.pageX + yOffset) + "px");
             });
         };
         $(document).ready(function () {
