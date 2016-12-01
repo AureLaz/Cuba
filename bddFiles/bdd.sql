@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* Nom de SGBD :  MySQL 5.0                                     */
-/* Date de création :  01/12/2016 17:21:03                      */
+/* Date de création :  01/12/2016 17:32:46                      */
 /*==============================================================*/
 
 
@@ -83,10 +83,10 @@ create table ASSOCIATION_6
 (
    ID_USER              int not null,
    ID_GUIDE             int not null,
-   DATE_AVIS_GUIDE      date not null,
+   ID_DATE_AVIS_GUIDE   int not null,
    ID_ACTIVITE          int not null,
    COMMENTAIRE_GUIDE    text,
-   primary key (ID_USER, ID_GUIDE, DATE_AVIS_GUIDE, ID_ACTIVITE)
+   primary key (ID_USER, ID_GUIDE, ID_DATE_AVIS_GUIDE, ID_ACTIVITE)
 );
 
 /*==============================================================*/
@@ -107,9 +107,9 @@ create table AVIS_ACTIVITE
 (
    ID_USER              int not null,
    ID_ACTIVITE          int not null,
-   DATE                 date not null,
+   ID_DATE_AVIS_ACTIVITE int not null,
    COMMENTAIRE_ACTIVITE text,
-   primary key (ID_USER, ID_ACTIVITE, DATE)
+   primary key (ID_USER, ID_ACTIVITE, ID_DATE_AVIS_ACTIVITE)
 );
 
 /*==============================================================*/
@@ -117,8 +117,9 @@ create table AVIS_ACTIVITE
 /*==============================================================*/
 create table DATE_AVIS_ACTIVITE
 (
-   DATE                 date not null,
-   primary key (DATE)
+   DATE_AVIS_ACTIVITE   date,
+   ID_DATE_AVIS_ACTIVITE int not null,
+   primary key (ID_DATE_AVIS_ACTIVITE)
 );
 
 /*==============================================================*/
@@ -126,8 +127,9 @@ create table DATE_AVIS_ACTIVITE
 /*==============================================================*/
 create table DATE_AVIS_GUIDE
 (
-   DATE_AVIS_GUIDE      date not null,
-   primary key (DATE_AVIS_GUIDE)
+   DATE_AVIS_GUIDE      date,
+   ID_DATE_AVIS_GUIDE   int not null,
+   primary key (ID_DATE_AVIS_GUIDE)
 );
 
 /*==============================================================*/
@@ -296,8 +298,8 @@ alter table ASSOCIATION_11 add constraint FK_ASSOCIATION_15 foreign key (ID_ACTI
 alter table ASSOCIATION_11 add constraint FK_ASSOCIATION_16 foreign key (ID_SAISON)
       references SAISON (ID_SAISON) on delete restrict on update restrict;
 
-alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_10 foreign key (DATE_AVIS_GUIDE)
-      references DATE_AVIS_GUIDE (DATE_AVIS_GUIDE) on delete restrict on update restrict;
+alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_10 foreign key (ID_DATE_AVIS_GUIDE)
+      references DATE_AVIS_GUIDE (ID_DATE_AVIS_GUIDE) on delete restrict on update restrict;
 
 alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_11 foreign key (ID_ACTIVITE)
       references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
@@ -323,8 +325,8 @@ alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE foreign key (ID_USER)
 alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE2 foreign key (ID_ACTIVITE)
       references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
 
-alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE3 foreign key (DATE)
-      references DATE_AVIS_ACTIVITE (DATE) on delete restrict on update restrict;
+alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE3 foreign key (ID_DATE_AVIS_ACTIVITE)
+      references DATE_AVIS_ACTIVITE (ID_DATE_AVIS_ACTIVITE) on delete restrict on update restrict;
 
 alter table HEBERGEMENT add constraint FK_ASSOCIATION_9 foreign key (ID_REGION)
       references REGION (ID_REGION) on delete restrict on update restrict;
