@@ -1,20 +1,16 @@
 /*==============================================================*/
 /* Nom de SGBD :  MySQL 5.0                                     */
-/* Date de création :  01/12/2016 17:32:46                      */
+/* Date de création :  01/12/2016 17:46:51                      */
 /*==============================================================*/
 
 
 drop table if exists ACTIVITE;
 
-drop table if exists ASSOCIATION_10;
-
-drop table if exists ASSOCIATION_11;
-
-drop table if exists ASSOCIATION_6;
-
-drop table if exists ASSOCIATION_8;
+drop table if exists ASSOCIER;
 
 drop table if exists AVIS_ACTIVITE;
+
+drop table if exists AVIS_GUIDE;
 
 drop table if exists DATE_AVIS_ACTIVITE;
 
@@ -25,6 +21,10 @@ drop table if exists GUIDE;
 drop table if exists HEBERGEMENT;
 
 drop table if exists HORRAIRE;
+
+drop table if exists INFORMER;
+
+drop table if exists JOUIR;
 
 drop table if exists REGION;
 
@@ -57,47 +57,13 @@ create table ACTIVITE
 );
 
 /*==============================================================*/
-/* Table : ASSOCIATION_10                                       */
+/* Table : ASSOCIER                                             */
 /*==============================================================*/
-create table ASSOCIATION_10
+create table ASSOCIER
 (
    ID_SAISON            int not null,
    ID_HORRAIRE          int not null,
    primary key (ID_SAISON, ID_HORRAIRE)
-);
-
-/*==============================================================*/
-/* Table : ASSOCIATION_11                                       */
-/*==============================================================*/
-create table ASSOCIATION_11
-(
-   ID_ACTIVITE          int not null,
-   ID_SAISON            int not null,
-   primary key (ID_ACTIVITE, ID_SAISON)
-);
-
-/*==============================================================*/
-/* Table : ASSOCIATION_6                                        */
-/*==============================================================*/
-create table ASSOCIATION_6
-(
-   ID_USER              int not null,
-   ID_GUIDE             int not null,
-   ID_DATE_AVIS_GUIDE   int not null,
-   ID_ACTIVITE          int not null,
-   COMMENTAIRE_GUIDE    text,
-   primary key (ID_USER, ID_GUIDE, ID_DATE_AVIS_GUIDE, ID_ACTIVITE)
-);
-
-/*==============================================================*/
-/* Table : ASSOCIATION_8                                        */
-/*==============================================================*/
-create table ASSOCIATION_8
-(
-   ID_GUIDE             int not null,
-   ID_ACTIVITE          int not null,
-   ID_REGION            int not null,
-   primary key (ID_GUIDE, ID_ACTIVITE, ID_REGION)
 );
 
 /*==============================================================*/
@@ -110,6 +76,19 @@ create table AVIS_ACTIVITE
    ID_DATE_AVIS_ACTIVITE int not null,
    COMMENTAIRE_ACTIVITE text,
    primary key (ID_USER, ID_ACTIVITE, ID_DATE_AVIS_ACTIVITE)
+);
+
+/*==============================================================*/
+/* Table : AVIS_GUIDE                                           */
+/*==============================================================*/
+create table AVIS_GUIDE
+(
+   ID_USER              int not null,
+   ID_GUIDE             int not null,
+   ID_DATE_AVIS_GUIDE   int not null,
+   ID_ACTIVITE          int not null,
+   COMMENTAIRE_GUIDE    text,
+   primary key (ID_USER, ID_GUIDE, ID_DATE_AVIS_GUIDE, ID_ACTIVITE)
 );
 
 /*==============================================================*/
@@ -199,6 +178,27 @@ create table HORRAIRE
 );
 
 /*==============================================================*/
+/* Table : INFORMER                                             */
+/*==============================================================*/
+create table INFORMER
+(
+   ID_GUIDE             int not null,
+   ID_ACTIVITE          int not null,
+   ID_REGION            int not null,
+   primary key (ID_GUIDE, ID_ACTIVITE, ID_REGION)
+);
+
+/*==============================================================*/
+/* Table : JOUIR                                                */
+/*==============================================================*/
+create table JOUIR
+(
+   ID_ACTIVITE          int not null,
+   ID_SAISON            int not null,
+   primary key (ID_ACTIVITE, ID_SAISON)
+);
+
+/*==============================================================*/
 /* Table : REGION                                               */
 /*==============================================================*/
 create table REGION
@@ -283,41 +283,14 @@ create table USER
    primary key (ID_USER)
 );
 
-alter table ACTIVITE add constraint FK_ASSOCIATION_7 foreign key (ID_REGION)
+alter table ACTIVITE add constraint FK_SE_DEROULER foreign key (ID_REGION)
       references REGION (ID_REGION) on delete restrict on update restrict;
 
-alter table ASSOCIATION_10 add constraint FK_ASSOCIATION_17 foreign key (ID_SAISON)
+alter table ASSOCIER add constraint FK_ASSOCIER foreign key (ID_SAISON)
       references SAISON (ID_SAISON) on delete restrict on update restrict;
 
-alter table ASSOCIATION_10 add constraint FK_ASSOCIATION_18 foreign key (ID_HORRAIRE)
+alter table ASSOCIER add constraint FK_ASSOCIER2 foreign key (ID_HORRAIRE)
       references HORRAIRE (ID_HORRAIRE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_11 add constraint FK_ASSOCIATION_15 foreign key (ID_ACTIVITE)
-      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_11 add constraint FK_ASSOCIATION_16 foreign key (ID_SAISON)
-      references SAISON (ID_SAISON) on delete restrict on update restrict;
-
-alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_10 foreign key (ID_DATE_AVIS_GUIDE)
-      references DATE_AVIS_GUIDE (ID_DATE_AVIS_GUIDE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_11 foreign key (ID_ACTIVITE)
-      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_6 foreign key (ID_USER)
-      references USER (ID_USER) on delete restrict on update restrict;
-
-alter table ASSOCIATION_6 add constraint FK_ASSOCIATION_8 foreign key (ID_GUIDE)
-      references GUIDE (ID_GUIDE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_8 add constraint FK_ASSOCIATION_12 foreign key (ID_GUIDE)
-      references GUIDE (ID_GUIDE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_8 add constraint FK_ASSOCIATION_13 foreign key (ID_ACTIVITE)
-      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
-
-alter table ASSOCIATION_8 add constraint FK_ASSOCIATION_14 foreign key (ID_REGION)
-      references REGION (ID_REGION) on delete restrict on update restrict;
 
 alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE foreign key (ID_USER)
       references USER (ID_USER) on delete restrict on update restrict;
@@ -328,11 +301,38 @@ alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE2 foreign key (ID_ACTIV
 alter table AVIS_ACTIVITE add constraint FK_AVIS_ACTIVITE3 foreign key (ID_DATE_AVIS_ACTIVITE)
       references DATE_AVIS_ACTIVITE (ID_DATE_AVIS_ACTIVITE) on delete restrict on update restrict;
 
-alter table HEBERGEMENT add constraint FK_ASSOCIATION_9 foreign key (ID_REGION)
-      references REGION (ID_REGION) on delete restrict on update restrict;
+alter table AVIS_GUIDE add constraint FK_AVIS_GUIDE foreign key (ID_USER)
+      references USER (ID_USER) on delete restrict on update restrict;
+
+alter table AVIS_GUIDE add constraint FK_AVIS_GUIDE2 foreign key (ID_GUIDE)
+      references GUIDE (ID_GUIDE) on delete restrict on update restrict;
+
+alter table AVIS_GUIDE add constraint FK_AVIS_GUIDE3 foreign key (ID_DATE_AVIS_GUIDE)
+      references DATE_AVIS_GUIDE (ID_DATE_AVIS_GUIDE) on delete restrict on update restrict;
+
+alter table AVIS_GUIDE add constraint FK_AVIS_GUIDE4 foreign key (ID_ACTIVITE)
+      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
 
 alter table HEBERGEMENT add constraint FK_DETENIR foreign key (ID_TYPEH)
       references TYPE_HEBERGEMENT (ID_TYPEH) on delete restrict on update restrict;
+
+alter table HEBERGEMENT add constraint FK_OFFRIR foreign key (ID_REGION)
+      references REGION (ID_REGION) on delete restrict on update restrict;
+
+alter table INFORMER add constraint FK_INFORMER foreign key (ID_GUIDE)
+      references GUIDE (ID_GUIDE) on delete restrict on update restrict;
+
+alter table INFORMER add constraint FK_INFORMER2 foreign key (ID_ACTIVITE)
+      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
+
+alter table INFORMER add constraint FK_INFORMER3 foreign key (ID_REGION)
+      references REGION (ID_REGION) on delete restrict on update restrict;
+
+alter table JOUIR add constraint FK_JOUIR foreign key (ID_ACTIVITE)
+      references ACTIVITE (ID_ACTIVITE) on delete restrict on update restrict;
+
+alter table JOUIR add constraint FK_JOUIR2 foreign key (ID_SAISON)
+      references SAISON (ID_SAISON) on delete restrict on update restrict;
 
 alter table SE_SITUER add constraint FK_SE_SITUER foreign key (ID_REGION)
       references REGION (ID_REGION) on delete restrict on update restrict;
